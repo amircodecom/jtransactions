@@ -1,0 +1,58 @@
+{
+  "id": "txn_01hq5z6y7x8w9v0u1t2s3r4q5p",
+  "timestamp": "2023-11-22T15:30:45Z",
+  "status": "completed",
+  "reported_by": "initiator",
+  "initiator": {
+    "type": "person",
+    "id": "user_12345",
+    "name": "John Smith"
+  },
+  "receiver": {
+    "type": "person",
+    "id": "user_67890",
+    "name": "Sarah Johnson"
+  },
+  "instruments": [
+    {
+      "id": "inst_01hq5z6y7x8w9v0u1t2s3r4q5p",
+      "type": "p2p_app",
+      "belongs_to": "initiator",
+      "role": "funding_source",
+      "p2p_app": {
+        "provider": "venmo",
+        "account_id": "venmo_123",
+        "handle": "@JohnSmith"
+      },
+      "metadata": {
+        "account_age_days": 730,
+        "verified": true
+      }
+    },
+    {
+      "id": "inst_01hq5z6y7x8w9v0u1t2s3r4q5q",
+      "type": "p2p_app",
+      "belongs_to": "receiver",
+      "role": "receiving_account",
+      "p2p_app": {
+        "provider": "venmo",
+        "account_id": "venmo_456",
+        "handle": "@SarahJ"
+      }
+    }
+  ],
+  "amount": {
+    "value": 125.50,
+    "currency": "USD",
+    "currency_type": "fiat"
+  },
+  "location": {
+    "type": "online",
+    "ip_address": "192.168.1.100",
+    "device_id": "iphone_14_pro"
+  },
+  "metadata": {
+    "purpose": "dinner repayment",
+    "reference": "Pizza night 11/21"
+  }
+}
