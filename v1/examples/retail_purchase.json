@@ -1,0 +1,74 @@
+{
+  "id": "txn_01hq6a7b8c9d0e1f2g3h4i5j6k",
+  "timestamp": "2023-11-22T14:22:10Z",
+  "status": "completed",
+  "initiator": {
+    "type": "person",
+    "id": "user_24680",
+    "name": "Michael Brown"
+  },
+  "receiver": {
+    "type": "business",
+    "id": "biz_13579",
+    "name": "Best Electronics Inc"
+  },
+  "instruments": [
+    {
+      "id": "inst_01hq6a7b8c9d0e1f2g3h4i5j6k",
+      "type": "credit_card",
+      "belongs_to": "initiator",
+      "role": "payment_method",
+      "credit_card": {
+        "last_four": "9876",
+        "network": "visa",
+        "expiry": "05/2025",
+        "cardholder_name": "MICHAEL BROWN"
+      },
+      "evidence": [
+        {
+          "evidence_type": "authorization",
+          "auth_code": "AUTH7890",
+          "timestamp": "2023-11-22T14:22:05Z"
+        }
+      ]
+    },
+    {
+      "id": "inst_01hq6a7b8c9d0e1f2g3h4i5j6l",
+      "type": "pos",
+      "belongs_to": "receiver",
+      "role": "authorization_device",
+      "pos": {
+        "terminal_id": "POS123456",
+        "merchant_id": "MERC987654",
+        "entry_method": "chip"
+      }
+    }
+  ],
+  "amount": {
+    "value": 599.99,
+    "currency": "USD",
+    "breakdown": {
+      "subtotal": 549.99,
+      "tax": 50.00,
+      "discount": 0.00
+    }
+  },
+  "items": [
+    {
+      "id": "item_01hq6a7b8c9d0e1f2g3h4i5j6m",
+      "description": "4K Smart TV 55\"",
+      "sku": "TV-55-4K-SMART",
+      "quantity": 1,
+      "unit_price": 599.99
+    }
+  ],
+  "location": {
+    "type": "physical",
+    "geo": {
+      "lat": 34.0522,
+      "lon": -118.2437,
+      "accuracy_meters": 50
+    },
+    "address": "123 Main St, Los Angeles, CA"
+  }
+}
