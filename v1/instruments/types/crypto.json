@@ -1,0 +1,78 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/crypto.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CryptocurrencyInstrument",
+  "description": "Cryptocurrency transaction instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "crypto" },
+        "crypto": {
+          "type": "object",
+          "properties": {
+            "currency": {
+              "type": "string",
+              "enum": ["BTC", "ETH", "USDT", "USDC", "XRP", "LTC", "other"],
+              "description": "Cryptocurrency ticker symbol"
+            },
+            "wallet_address": {
+              "type": "string",
+              "pattern": "^0x[a-fA-F0-9]{40}$|^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$",
+              "description": "Sender/recipient wallet address"
+            },
+            "network": {
+              "type": "string",
+              "enum": ["ethereum", "bitcoin", "solana", "ripple", "other"],
+              "description": "Blockchain network"
+            }
+          },
+          "required": ["currency", "wallet_address", "network"]
+        },
+        "metadata": {
+          "properties": {
+            "exchange_name": {
+              "type": "string",
+              "description": "Exchange platform if applicable"
+            },
+            "is_smart_contract": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether interacting with smart contract"
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "blockchain_proof" },
+                  "tx_hash": {
+                    "type": "string",
+                    "pattern": "^0x[a-fA-F0-9]{64}$|^[a-fA-F0-9]{64}$"
+                  },
+                  "block_number": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": ["evidence_type", "tx_hash"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "exchange_confirmation" },
+                  "confirmation_id": { "type": "string" }
+                },
+                "required": ["evidence_type", "confirmation_id"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["crypto"]
+    }
+  ]
+}
