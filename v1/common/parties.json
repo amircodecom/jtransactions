@@ -1,0 +1,35 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/common/parties.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Parties",
+  "description": "Definitions for transaction participants",
+  "type": "object",
+  "definitions": {
+    "party": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["person", "business", "system"]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the party"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable name"
+        },
+        "tax_id": {
+          "type": "string",
+          "description": "Tax identification number"
+        }
+      },
+      "required": ["type", "id"]
+    },
+    "party_relation": {
+      "type": "string",
+      "enum": ["initiator", "receiver", "system", "intermediary"]
+    }
+  }
+}
