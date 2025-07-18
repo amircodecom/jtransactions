@@ -1,0 +1,87 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/pos.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PointOfSaleInstrument",
+  "description": "Point-of-sale system instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "pos" },
+        "pos": {
+          "type": "object",
+          "properties": {
+            "terminal_id": {
+              "type": "string",
+              "description": "Unique POS terminal identifier"
+            },
+            "merchant_id": {
+              "type": "string",
+              "description": "Merchant account identifier"
+            },
+            "store_id": {
+              "type": "string",
+              "description": "Physical store location identifier"
+            },
+            "operator_id": {
+              "type": "string",
+              "description": "Cashier/operator identifier"
+            },
+            "entry_method": {
+              "type": "string",
+              "enum": ["chip", "swipe", "tap", "manual"],
+              "description": "How payment was entered"
+            }
+          },
+          "required": ["terminal_id", "merchant_id"]
+        },
+        "metadata": {
+          "properties": {
+            "mcc": {
+              "type": "string",
+              "pattern": "^\\d{4}$",
+              "description": "Merchant category code"
+            },
+            "tax_amount": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "receipt" },
+                  "receipt_number": { "type": "string" },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "description": { "type": "string" },
+                        "price": { "type": "number" }
+                      }
+                    }
+                  }
+                },
+                "required": ["evidence_type", "receipt_number"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "authorization" },
+                  "approval_code": { "type": "string" }
+                },
+                "required": ["evidence_type", "approval_code"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["pos"]
+    }
+  ]
+}
