@@ -1,0 +1,88 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/gift_card.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GiftCardInstrument",
+  "description": "Prepaid gift card instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "gift_card" },
+        "gift_card": {
+          "type": "object",
+          "properties": {
+            "card_number": {
+              "type": "string",
+              "pattern": "^[A-Z0-9]{12,20}$",
+              "description": "Gift card identification number"
+            },
+            "pin": {
+              "type": "string",
+              "pattern": "^\\d{4,8}$",
+              "description": "Security code (when applicable)"
+            },
+            "issuer": {
+              "type": "string",
+              "enum": ["Visa", "Mastercard", "Amex", "Retailer"],
+              "description": "Card network or retailer brand"
+            },
+            "initial_balance": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Original loaded amount"
+            },
+            "remaining_balance": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Current available balance"
+            },
+            "expiration_date": {
+              "$ref": "../../common/timestamps.json#/definitions/iso8601",
+              "description": "When card becomes invalid"
+            }
+          },
+          "required": ["card_number", "issuer"]
+        },
+        "metadata": {
+          "properties": {
+            "purchase_location": {
+              "type": "string",
+              "description": "Where card was originally purchased"
+            },
+            "restrictions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["online_only", "in_store_only", "no_cash_access", "international_blocked"]
+              }
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "activation_receipt" },
+                  "receipt_number": { "type": "string" }
+                },
+                "required": ["evidence_type"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "balance_check" },
+                  "balance": { "type": "number" },
+                  "timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" }
+                },
+                "required": ["evidence_type", "balance"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["gift_card"]
+    }
+  ]
+}
