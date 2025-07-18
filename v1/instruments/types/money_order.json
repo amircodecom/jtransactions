@@ -1,0 +1,74 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/money_order.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MoneyOrderInstrument",
+  "description": "Money order payment instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "money_order" },
+        "money_order": {
+          "type": "object",
+          "properties": {
+            "serial_number": {
+              "type": "string",
+              "pattern": "^[A-Z0-9]{10,20}$",
+              "description": "Money order tracking number"
+            },
+            "issuer": {
+              "type": "string",
+              "enum": ["USPS", "Western Union", "MoneyGram", "other"],
+              "default": "USPS"
+            },
+            "purchase_location": {
+              "type": "string",
+              "description": "Where the money order was bought"
+            },
+            "purchase_date": {
+              "$ref": "../../common/timestamps.json#/definitions/iso8601"
+            }
+          },
+          "required": ["serial_number", "issuer"]
+        },
+        "metadata": {
+          "allOf": [
+            { "$ref": "../base/metadata.json#/definitions/physical_metadata" },
+            {
+              "properties": {
+                "receipt_available": {
+                  "type": "boolean",
+                  "default": false
+                }
+              }
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "receipt_image" },
+                  "image_url": { "type": "string", "format": "uri" }
+                },
+                "required": ["evidence_type", "image_url"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "tracking_status" },
+                  "status": { "type": "string" },
+                  "timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" }
+                },
+                "required": ["evidence_type", "status"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["money_order"]
+    }
+  ]
+}
