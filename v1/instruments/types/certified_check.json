@@ -1,0 +1,42 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/certified_check.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CertifiedCheckInstrument",
+  "description": "Bank-certified check instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    { "$ref": "check.json" },
+    {
+      "properties": {
+        "type": { "const": "certified_check" },
+        "certified_check": {
+          "type": "object",
+          "properties": {
+            "certification_id": {
+              "type": "string",
+              "description": "Bank's certification reference"
+            },
+            "guarantee_date": {
+              "$ref": "../../common/timestamps.json#/definitions/iso8601"
+            },
+            "issuing_branch": {
+              "type": "string",
+              "description": "Bank branch location"
+            }
+          },
+          "required": ["certification_id", "guarantee_date"]
+        },
+        "metadata": {
+          "properties": {
+            "guarantee_amount": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      },
+      "required": ["certified_check"]
+    }
+  ]
+}
