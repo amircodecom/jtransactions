@@ -1,0 +1,76 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/bank_account.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BankAccountInstrument",
+  "description": "Bank account details for ACH/wire transfers",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "bank_account" },
+        "bank_account": {
+          "type": "object",
+          "properties": {
+            "routing_number": {
+              "type": "string",
+              "pattern": "^\\d{9}$",
+              "description": "ABA routing number"
+            },
+            "account_number": {
+              "type": "string",
+              "minLength": 4,
+              "description": "Last 4+ digits of account"
+            },
+            "account_type": {
+              "type": "string",
+              "enum": ["checking", "savings", "money_market"],
+              "default": "checking"
+            },
+            "bank_name": {
+              "type": "string",
+              "description": "Financial institution name"
+            }
+          },
+          "required": ["routing_number", "account_number"]
+        },
+        "metadata": {
+          "allOf": [
+            { "$ref": "../base/metadata.json#/definitions/base_metadata" },
+            {
+              "properties": {
+                "account_age_days": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "verified": {
+                  "type": "boolean",
+                  "default": false
+                }
+              }
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "micro_deposits" },
+                  "amount_1": { "type": "number" },
+                  "amount_2": { "type": "number" }
+                },
+                "required": ["evidence_type", "amount_1", "amount_2"]
+              },
+              {
+                "$ref": "../base/evidence.json#/definitions/digital_evidence"
+              }
+            ]
+          }
+        }
+      },
+      "required": ["bank_account"]
+    }
+  ]
+}
