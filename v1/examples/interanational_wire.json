@@ -1,0 +1,73 @@
+{
+  "id": "txn_01hq6d9e0f1g2h3i4j5k6l7m8n",
+  "timestamp": "2023-11-22T10:30:00Z",
+  "status": "pending",
+  "initiator": {
+    "type": "business",
+    "id": "biz_55667",
+    "name": "Global Imports LLC",
+    "tax_id": "123-45-6789"
+  },
+  "receiver": {
+    "type": "business",
+    "id": "biz_77889",
+    "name": "EuroElectronics GmbH",
+    "tax_id": "DE123456789"
+  },
+  "instruments": [
+    {
+      "id": "inst_01hq6d9e0f1g2h3i4j5k6l7m8n",
+      "type": "bank_account",
+      "belongs_to": "initiator",
+      "role": "funding_source",
+      "bank_account": {
+        "routing_number": "026009593",
+        "account_number": "987654321",
+        "bank_name": "Bank of America",
+        "account_type": "checking"
+      }
+    },
+    {
+      "id": "inst_01hq6d9e0f1g2h3i4j5k6l7m8o",
+      "type": "wire_transfer",
+      "belongs_to": "system",
+      "role": "intermediary",
+      "wire_transfer": {
+        "reference_number": "WT987654321",
+        "swift_code": "BOFAUS3N",
+        "iban": "DE89370400440532013000",
+        "intermediary_bank": {
+          "name": "Deutsche Bank",
+          "swift_code": "DEUTDEFF"
+        }
+      }
+    }
+  ],
+  "amount": {
+    "value": 15000.00,
+    "currency": "USD",
+    "converted_value": 13650.00,
+    "converted_currency": "EUR",
+    "exchange_rate": 0.91,
+    "fees": {
+      "wire_fee": 45.00,
+      "foreign_exchange_fee": 75.00
+    }
+  },
+  "metadata": {
+    "purpose": "supplier payment",
+    "invoice_reference": "INV-2023-11-001",
+    "urgency": "priority",
+    "regulatory_compliance": {
+      "aml_check": true,
+      "ofac_check": true
+    }
+  },
+  "evidence": [
+    {
+      "evidence_type": "wire_instruction",
+      "document_ref": "wire_instructions_001.pdf",
+      "timestamp": "2023-11-21T15:00:00Z"
+    }
+  ]
+}
