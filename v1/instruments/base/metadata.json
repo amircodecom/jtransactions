@@ -1,0 +1,65 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/base/metadata.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InstrumentMetadata",
+  "description": "Extended attributes for financial instruments",
+  "type": "object",
+  "definitions": {
+    "base_metadata": {
+      "type": "object",
+      "properties": {
+        "risk_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Risk assessment value"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Classification labels"
+        },
+        "expiry": {
+          "$ref": "../../common/timestamps.json#/definitions/iso8601",
+          "description": "When this instrument becomes invalid"
+        }
+      }
+    },
+    "digital_metadata": {
+      "allOf": [
+        { "$ref": "#/definitions/base_metadata" },
+        {
+          "properties": {
+            "device_id": {
+              "type": "string",
+              "description": "Originating device identifier"
+            },
+            "ip_address": {
+              "type": "string",
+              "format": "ipv4"
+            }
+          }
+        }
+      ]
+    },
+    "physical_metadata": {
+      "allOf": [
+        { "$ref": "#/definitions/base_metadata" },
+        {
+          "properties": {
+            "location": {
+              "$ref": "../../common/location.json",
+              "description": "Where instrument was used/issued"
+            },
+            "carrier": {
+              "type": "string",
+              "description": "For mailed instruments"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
