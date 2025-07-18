@@ -1,0 +1,52 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/common/location.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Location",
+  "description": "Geographic and network location data",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["physical", "online", "hybrid"],
+      "default": "physical"
+    },
+    "geo": {
+      "type": "object",
+      "properties": {
+        "lat": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "lon": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "accuracy_meters": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": ["lat", "lon"]
+    },
+    "ip_address": {
+      "type": "string",
+      "format": "ipv4"
+    },
+    "device_id": {
+      "type": "string",
+      "description": "Unique device identifier"
+    },
+    "address": {
+      "type": "string",
+      "description": "Human-readable address"
+    }
+  },
+  "anyOf": [
+    { "required": ["geo"] },
+    { "required": ["ip_address"] },
+    { "required": ["address"] }
+  ],
+  "additionalProperties": false
+}
