@@ -1,0 +1,74 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/atm.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ATMInstrument",
+  "description": "ATM machine transaction instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "atm" },
+        "atm": {
+          "type": "object",
+          "properties": {
+            "terminal_id": {
+              "type": "string",
+              "description": "ATM identifier"
+            },
+            "operator": {
+              "type": "string",
+              "enum": ["bank", "independent", "retail"],
+              "description": "ATM operator type"
+            },
+            "location": {
+              "type": "string",
+              "description": "Physical ATM location"
+            },
+            "surcharge": {
+              "type": "number",
+              "minimum": 0,
+              "description": "ATM usage fee"
+            }
+          },
+          "required": ["terminal_id", "operator"]
+        },
+        "metadata": {
+          "properties": {
+            "network": {
+              "type": "string",
+              "enum": ["plus", "cirrus", "star", "pulse"],
+              "description": "ATM network"
+            },
+            "cash_available": {
+              "type": "boolean",
+              "description": "Whether cash was dispensed"
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "atm_receipt" },
+                  "receipt_number": { "type": "string" }
+                },
+                "required": ["evidence_type", "receipt_number"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "card_retention" },
+                  "retained": { "type": "boolean" }
+                },
+                "required": ["evidence_type", "retained"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["atm"]
+    }
+  ]
+}
