@@ -1,0 +1,67 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/base/evidence.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Evidence",
+  "description": "Proof and verification documents for instruments",
+  "type": "object",
+  "definitions": {
+    "base_evidence": {
+      "type": "object",
+      "properties": {
+        "evidence_type": {
+          "type": "string",
+          "description": "Category of evidence"
+        },
+        "timestamp": {
+          "$ref": "../../common/timestamps.json#/definitions/iso8601"
+        },
+        "storage_ref": {
+          "type": "string",
+          "format": "uri",
+          "description": "Location of evidence document"
+        }
+      },
+      "required": ["evidence_type", "timestamp"]
+    },
+    "digital_evidence": {
+      "allOf": [
+        { "$ref": "#/definitions/base_evidence" },
+        {
+          "properties": {
+            "evidence_type": {
+              "enum": [
+                "digital_signature",
+                "biometric_verification",
+                "device_fingerprint"
+              ]
+            },
+            "confidence_score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        }
+      ]
+    },
+    "physical_evidence": {
+      "allOf": [
+        { "$ref": "#/definitions/base_evidence" },
+        {
+          "properties": {
+            "evidence_type": {
+              "enum": [
+                "check_image",
+                "id_scan",
+                "signature_card"
+              ]
+            },
+            "geo_location": {
+              "$ref": "../../common/location.json#/properties/geo"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
