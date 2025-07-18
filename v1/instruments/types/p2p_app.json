@@ -1,0 +1,76 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/p2p_app.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "P2PPaymentAppInstrument",
+  "description": "Peer-to-peer payment app instrument (Venmo, PayPal, etc.)",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "p2p_app" },
+        "p2p_app": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": ["venmo", "paypal", "zelle", "cashapp", "wise", "revolut"],
+              "description": "P2P service provider"
+            },
+            "account_id": {
+              "type": "string",
+              "description": "User's account identifier"
+            },
+            "handle": {
+              "type": "string",
+              "description": "Public username/identifier ($username, email, phone)"
+            },
+            "instant_transfer": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether instant transfer was used"
+            }
+          },
+          "required": ["provider", "account_id"]
+        },
+        "metadata": {
+          "properties": {
+            "account_age_days": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "How long account has been active"
+            },
+            "verified": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether account is identity-verified"
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "transaction_receipt" },
+                  "receipt_id": { "type": "string" },
+                  "timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" }
+                },
+                "required": ["evidence_type", "receipt_id"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "balance_confirmation" },
+                  "available_balance": { "type": "number" }
+                },
+                "required": ["evidence_type", "available_balance"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["p2p_app"]
+    }
+  ]
+}
