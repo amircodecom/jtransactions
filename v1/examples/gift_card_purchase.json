@@ -1,0 +1,69 @@
+{
+  "id": "txn_01hq6c8d9e0f1g2h3i4j5k6l7m",
+  "timestamp": "2023-11-22T12:45:18Z",
+  "status": "completed",
+  "initiator": {
+    "type": "person",
+    "id": "user_33445",
+    "name": "Emily Chen"
+  },
+  "receiver": {
+    "type": "business",
+    "id": "biz_22446",
+    "name": "Amazon.com"
+  },
+  "instruments": [
+    {
+      "id": "inst_01hq6c8d9e0f1g2h3i4j5k6l7m",
+      "type": "credit_card",
+      "belongs_to": "initiator",
+      "role": "funding_source",
+      "credit_card": {
+        "last_four": "1122",
+        "network": "mastercard",
+        "expiry": "08/2026",
+        "cardholder_name": "EMILY CHEN"
+      }
+    },
+    {
+      "id": "inst_01hq6c8d9e0f1g2h3i4j5k6l7n",
+      "type": "gift_card",
+      "belongs_to": "receiver",
+      "role": "purchased_item",
+      "gift_card": {
+        "card_number": "GC987654321098",
+        "issuer": "Amazon",
+        "initial_balance": 100.00,
+        "expiration_date": "2025-11-22"
+      },
+      "metadata": {
+        "purchase_location": "amazon.com",
+        "delivery_method": "email"
+      }
+    }
+  ],
+  "amount": {
+    "value": 100.00,
+    "currency": "USD",
+    "fees": {
+      "activation_fee": 0.00
+    }
+  },
+  "location": {
+    "type": "online",
+    "ip_address": "203.0.113.45",
+    "device_id": "macbook_pro_2023"
+  },
+  "evidence": [
+    {
+      "evidence_type": "purchase_receipt",
+      "receipt_id": "ORD12345678",
+      "timestamp": "2023-11-22T12:45:20Z"
+    }
+  ],
+  "metadata": {
+    "purpose": "holiday gift",
+    "recipient_email": "recipient@example.com",
+    "gift_message": "Happy Holidays!"
+  }
+}
