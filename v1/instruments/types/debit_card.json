@@ -1,0 +1,50 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/debit_card.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DebitCardInstrument",
+  "description": "Debit card payment instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    { "$ref": "credit_card.json" },
+    {
+      "properties": {
+        "type": { "const": "debit_card" },
+        "debit_card": {
+          "type": "object",
+          "properties": {
+            "linked_account": {
+              "type": "string",
+              "enum": ["checking", "savings"],
+              "description": "Linked bank account type"
+            },
+            "bank_name": {
+              "type": "string",
+              "description": "Issuing bank name"
+            },
+            "requires_pin": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether PIN verification was required"
+            }
+          }
+        },
+        "metadata": {
+          "properties": {
+            "daily_withdrawal_limit": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Maximum allowed ATM withdrawals"
+            },
+            "pos_limit": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Maximum POS transaction amount"
+            }
+          }
+        }
+      },
+      "required": ["debit_card"]
+    }
+  ]
+}
