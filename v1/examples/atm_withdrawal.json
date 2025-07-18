@@ -1,0 +1,67 @@
+{
+  "id": "txn_01hq6b7c8d9e0f1g2h3i4j5k6l",
+  "timestamp": "2023-11-22T09:15:33Z",
+  "status": "completed",
+  "initiator": {
+    "type": "person",
+    "id": "user_11223",
+    "name": "David Wilson"
+  },
+  "receiver": {
+    "type": "system",
+    "id": "atm_network_001",
+    "name": "Global ATM Network"
+  },
+  "instruments": [
+    {
+      "id": "inst_01hq6b7c8d9e0f1g2h3i4j5k6l",
+      "type": "debit_card",
+      "belongs_to": "initiator",
+      "role": "funding_source",
+      "debit_card": {
+        "last_four": "5566",
+        "network": "visa",
+        "issuer": "Bank of America",
+        "linked_account": "checking"
+      }
+    },
+    {
+      "id": "inst_01hq6b7c8d9e0f1g2h3i4j5k6m",
+      "type": "atm",
+      "belongs_to": "system",
+      "role": "authorization_device",
+      "atm": {
+        "terminal_id": "ATM87654321",
+        "operator": "MoneyPlus",
+        "location": "123 Main St, New York"
+      },
+      "evidence": [
+        {
+          "evidence_type": "atm_receipt",
+          "receipt_number": "ATM78901234",
+          "timestamp": "2023-11-22T09:15:35Z"
+        }
+      ]
+    }
+  ],
+  "amount": {
+    "value": 200.00,
+    "currency": "USD",
+    "fees": {
+      "atm_fee": 3.50,
+      "foreign_fee": 0.00
+    }
+  },
+  "location": {
+    "type": "physical",
+    "geo": {
+      "lat": 40.7128,
+      "lon": -74.0060,
+      "accuracy_meters": 20
+    }
+  },
+  "metadata": {
+    "purpose": "cash withdrawal",
+    "tags": ["atm", "withdrawal"]
+  }
+}
