@@ -1,0 +1,51 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/base/instrument.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BaseInstrument",
+  "description": "Core fields for all financial instruments",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the instrument instance"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "bank_account",
+        "check",
+        "certified_check",
+        "money_order",
+        "gift_card",
+        "credit_card",
+        "debit_card",
+        "p2p_app",
+        "pos",
+        "atm",
+        "crypto",
+        "mobile_wallet",
+        "wire_transfer"
+      ],
+      "description": "Instrument type classification"
+    },
+    "belongs_to": {
+      "$ref": "../../common/parties.json#/definitions/party_relation",
+      "description": "Which party controls this instrument"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "funding_source",
+        "payment_method",
+        "receiving_account",
+        "authorization_device",
+        "purchased_item",
+        "intermediary"
+      ],
+      "description": "Functional role in the transaction"
+    }
+  },
+  "required": ["id", "type"],
+  "additionalProperties": false
+}
