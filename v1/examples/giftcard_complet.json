@@ -1,0 +1,133 @@
+{
+  "id": "txn_01hq7f8g9h0i1j2k3l4m5n6o7p",
+  "timestamp": "2023-11-23T13:45:22Z",
+  "status": "completed",
+  "reported_by": "initiator",
+  "initiator": {
+    "type": "person",
+    "id": "user_12345",
+    "name": "John Doe",
+    "email": "john.doe@example.com"
+  },
+  "receiver": {
+    "type": "person",
+    "id": "user_67890",
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com"
+  },
+  "instruments": [
+    {
+      "id": "inst_01hq7f8g9h0i1j2k3l4m5n6o7p",
+      "type": "credit_card",
+      "belongs_to": "initiator",
+      "role": "funding_source",
+      "credit_card": {
+        "last_four": "4321",
+        "network": "visa",
+        "expiry": "12/2025",
+        "issuer": "TD Bank"
+      },
+      "metadata": {
+        "is_business_card": false,
+        "card_present": false
+      }
+    },
+    {
+      "id": "inst_01hq7f8g9h0i1j2k3l4m5n6o7q",
+      "type": "p2p_app",
+      "belongs_to": "initiator",
+      "role": "payment_method",
+      "p2p_app": {
+        "provider": "paypal",
+        "account_id": "paypal_john",
+        "handle": "john.doe@example.com"
+      },
+      "metadata": {
+        "account_age_days": 1095,
+        "verified": true
+      }
+    },
+    {
+      "id": "inst_01hq7f8g9h0i1j2k3l4m5n6o7r",
+      "type": "gift_card",
+      "belongs_to": "receiver",
+      "role": "purchased_item",
+      "gift_card": {
+        "card_number": "VGC123456789012",
+        "issuer": "Visa",
+        "initial_balance": 500.00,
+        "remaining_balance": 500.00,
+        "expiration_date": "2024-12-31"
+      },
+      "metadata": {
+        "purchase_location": "giftcards.com",
+        "delivery_method": "email"
+      }
+    },
+    {
+      "id": "inst_01hq7f8g9h0i1j2k3l4m5n6o7s",
+      "type": "pos",
+      "belongs_to": "system",
+      "role": "authorization_device",
+      "pos": {
+        "terminal_id": "WEBCHECKOUT001",
+        "merchant_id": "GIFTCARDSINC"
+      }
+    }
+  ],
+  "amount": {
+    "value": 500.00,
+    "currency": "USD",
+    "breakdown": {
+      "card_price": 495.00,
+      "activation_fee": 5.00
+    }
+  },
+  "location": {
+    "type": "online",
+    "ip_address": "192.168.1.150",
+    "device_id": "macbook_pro_2023"
+  },
+  "evidence": [
+    {
+      "evidence_type": "purchase_confirmation",
+      "order_id": "GC987654321",
+      "timestamp": "2023-11-23T13:45:25Z",
+      "storage_ref": "s3://receipts/giftcards/GC987654321.pdf"
+    },
+    {
+      "evidence_type": "email_delivery",
+      "recipient": "jane.smith@example.com",
+      "subject": "Your Visa Gift Card",
+      "timestamp": "2023-11-23T13:48:00Z"
+    },
+    {
+      "evidence_type": "funding_source",
+      "source_transaction": "txn_CC78901234",
+      "amount": 500.00
+    }
+  ],
+  "metadata": {
+    "purpose": "holiday bonus",
+    "notes": "Thank you for your hard work this year!",
+    "tags": ["gift", "employee_bonus", "visa_card"],
+    "steps": [
+      {
+        "sequence": 1,
+        "action": "purchased_physical_card",
+        "timestamp": "2023-11-23T13:30:00Z"
+      },
+      {
+        "sequence": 2,
+        "action": "loaded_funds_via_paypal",
+        "timestamp": "2023-11-23T13:42:00Z"
+      },
+      {
+        "sequence": 3,
+        "action": "delivered_via_email",
+        "timestamp": "2023-11-23T13:48:00Z"
+      }
+    ]
+  }
+}
+
