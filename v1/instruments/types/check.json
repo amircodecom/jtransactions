@@ -1,0 +1,74 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/check.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CheckInstrument",
+  "description": "Paper check payment instrument",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "check" },
+        "check": {
+          "type": "object",
+          "properties": {
+            "check_number": {
+              "type": "string",
+              "pattern": "^\\d+$",
+              "description": "Sequential check number"
+            },
+            "routing_number": {
+              "type": "string",
+              "pattern": "^\\d{9}$"
+            },
+            "account_number": {
+              "type": "string",
+              "minLength": 4
+            },
+            "payee_name": {
+              "type": "string",
+              "description": "Named recipient on check"
+            }
+          },
+          "required": ["check_number", "routing_number", "account_number"]
+        },
+        "metadata": {
+          "allOf": [
+            { "$ref": "../base/metadata.json#/definitions/physical_metadata" },
+            {
+              "properties": {
+                "check_sequence": {
+                  "type": "string",
+                  "enum": ["single", "duplicate", "triplicate"],
+                  "default": "single"
+                }
+              }
+            }
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "front_image" },
+                  "image_url": { "type": "string", "format": "uri" }
+                },
+                "required": ["evidence_type", "image_url"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "back_image" },
+                  "endorsement": { "type": "string" }
+                },
+                "required": ["evidence_type"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["check"]
+    }
+  ]
+}
