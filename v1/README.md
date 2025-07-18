@@ -8,24 +8,41 @@ Complete schema definition for financial transaction logging system.
 
 ## Structure
 
-```
 schemas_v1/
-├── common/               # Shared definitions
-│   ├── currency.json     # Monetary amounts
-│   ├── location.json     # Geo/IP data  
-│   ├── parties.json      # Participant types
-│   └── timestamps.json   # Time formats
-│
-├── instruments/          # Payment instruments
-│   ├── base/             # Core definitions
-│   └── types/            # Specific instrument schemas
-│
-├── examples/             # Sample transactions
-│
-├── transaction.json      # Root schema
-├── validate.js           # Validation script
-└── README.md             # This file
-```
+├── common/
+│   ├── currency.json
+│   ├── location.json
+│   ├── parties.json
+│   └── timestamps.json
+├── instruments/
+│   ├── base/
+│   │   ├── instrument.json
+│   │   ├── evidence.json
+│   │   └── metadata.json
+│   └── types/
+│       ├── bank_account.json
+│       ├── check.json
+│       ├── certified_check.json
+│       ├── money_order.json
+│       ├── gift_card.json
+│       ├── credit_card.json
+│       ├── debit_card.json
+│       ├── p2p_app.json
+│       ├── pos.json
+│       ├── atm.json
+│       ├── crypto.json
+│       ├── mobile_wallet.json
+│       └── wire_transfer.json
+├── examples/
+│   ├── p2p_transfer.json
+│   ├── retail_purchase.json
+│   ├── atm_withdrawal.json
+│   ├── gift_card_purchase.json
+│   ├── international_wire.json
+│   └── crypto_transaction.json
+├── transaction.json
+├── README.md
+└── validate.js
 
 ## Usage
 
