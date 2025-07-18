@@ -1,0 +1,26 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/common/timestamps.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Timestamps",
+  "description": "Timestamp definitions for financial transactions",
+  "type": "object",
+  "definitions": {
+    "iso8601": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 timestamp with timezone offset",
+      "examples": ["2023-11-21T12:34:56Z", "2023-11-21T07:34:56-05:00"]
+    },
+    "unix_epoch": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Seconds since 1970-01-01 UTC"
+    },
+    "business_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date without time component",
+      "examples": ["2023-11-21"]
+    }
+  }
+}
