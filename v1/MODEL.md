@@ -18,7 +18,7 @@
 
 ---
 
-Intruments (type): bank_account, check, certified_check, money_order, gift_card, credit_card, debit_card, p2p_app, pos, atm, crypto, mobile_wallet, wire_transfer
+Intruments (type): bank_account, check, certified_check, money_order, gift_card, credit_card, debit_card, p2p_app, pos, atm, crypto, mobile_wallet, wire_transfer, interac_transfer
 
 # Instrument
 
@@ -217,6 +217,31 @@ Intruments (type): bank_account, check, certified_check, money_order, gift_card,
 |               | .urgency | [standard, priority, express] | |
 | evidence []   | { evidence_type: "wire_confirmation", confirmation_number} | |
 |               | or {evidence_type: "bank_receipt", receipt_date #iso8601} | |
+
+
+## Interac Transfer
+
+| Field            | Value     | REF/ENUM  |
+| ------------     | --------- | ----------|
+| type             | "interac_transfer"   | |
+| interac_transfer | {}        | |
+|                  | .reference_number | |
+|                  | .financial_institution | [RBC, TD, Scotiabank, BMO, CIBC, Desjardins, National Bank, other] |
+|                  | .transfer_type | [email, mobile] |
+|                  | .auto_deposit_enabled (bool) | |
+|                  | .security_question | |
+|                  | .recipient_email | |
+|                  | .recipient_mobile | |
+| metadata         | {} | |
+|                  | .transfer_speed | [instant, 30_minutes, 1_hour, next_day ] |
+|                  | .interac_fee (number) | |
+|                  | .recipient_account_type | [checking, saving, uknown] | 
+| evidence []      | { evidence_type: "transfer_confirmation" , confirmation_number, timestamp } | |
+|                  | or { evidence_type: "deposit_notification", deposit_timestamp, recipient_bank} | |
+|                  | or { evidence_type: "security_answer_attempt", attempt_timestamp, successful (bool) | |
+
+
+
 
 
 ## Check
