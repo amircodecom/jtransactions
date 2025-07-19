@@ -26,7 +26,8 @@
         "crypto",
         "mobile_wallet",
         "wire_transfer",
-        "interac_transfer"
+        "interac_transfer",
+        "msb_transfer"
       ],
       "description": "Instrument type classification"
     },
