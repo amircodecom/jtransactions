@@ -69,7 +69,7 @@
           "sku": { "type": "string" },
           "quantity": { "type": "number", "minimum": 1 },
           "unit_price": { "type": "number", "minimum": 0 },
-          "tax": { "$ref": "common/currency.json#/definitions/tax" }
+          "tax": { "type": "number", "minimum": 0, "description": "Tax Amount" }
         },
         "required": ["description", "quantity", "unit_price"]
       }
