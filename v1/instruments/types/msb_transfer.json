@@ -1,0 +1,109 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/msb_transfer.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MoneyServiceBusinessInstrument",
+  "description": "Money Service Business transfer instrument (Western Union, MoneyGram, etc.)",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "msb_transfer" },
+        "msb_transfer": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "enum": ["Western Union", "MoneyGram", "Ria", "Small World", "Other"],
+              "description": "MSB service provider"
+            },
+            "transaction_number": {
+              "type": "string",
+              "pattern": "^[A-Z0-9]{8,15}$",
+              "description": "MSB's reference number"
+            },
+            "payout_method": {
+              "type": "string",
+              "enum": ["cash_pickup", "bank_deposit", "mobile_wallet", "home_delivery"],
+              "description": "How recipient receives funds"
+            },
+            "payout_currency": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$",
+              "description": "Currency received by recipient"
+            },
+            "exchange_rate": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Applied currency conversion rate"
+            },
+            "sender_id_type": {
+              "type": "string",
+              "enum": ["passport", "driver_license", "national_id", "other"],
+              "description": "ID used for sending"
+            },
+            "receiver_id_required": {
+              "type": "boolean",
+              "description": "Whether recipient must show ID"
+            }
+          },
+          "required": ["provider", "transaction_number", "payout_method"]
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "regulatory_compliance": {
+              "type": "object",
+              "properties": {
+                "aml_check": { "type": "boolean" },
+                "ctr_filed": { "type": "boolean" },
+                "sender_ssn": { "type": "string", "pattern": "^\\d{9}$" }
+              },
+              "required": ["aml_check"]
+            },
+            "transfer_purpose": {
+              "type": "string",
+              "enum": ["family_support", "business", "gift", "medical", "other"]
+            },
+            "relationship_to_recipient": {
+              "type": "string",
+              "description": "Sender-declared relationship"
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "send_receipt" },
+                  "receipt_number": { "type": "string" },
+                  "control_number": { "type": "string" }
+                },
+                "required": ["evidence_type", "receipt_number"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "payout_confirmation" },
+                  "payout_location": { "type": "string" },
+                  "agent_id": { "type": "string" }
+                },
+                "required": ["evidence_type"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "id_verification" },
+                  "id_type": { "type": "string" },
+                  "country_issued": { "type": "string" }
+                },
+                "required": ["evidence_type", "id_type"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["msb_transfer"]
+    }
+  ]
+}
