@@ -1,0 +1,96 @@
+{
+  "id": "txn_01hq9i8j7k6l5m4n3o2p1q0r1s",
+  "timestamp": "2023-11-24T09:30:15Z",
+  "status": "completed",
+  "reported_by": "initiator",
+  "initiator": {
+    "type": "person",
+    "id": "user_33456",
+    "name": "Sarah Johnson",
+    "email": "sarah@example.com"
+  },
+  "instruments": [
+    {
+      "id": "inst_01hq9i8j7k6l5m4n3o2p1q0r1s",
+      "type": "interac_transfer",
+      "belongs_to": "initiator",
+      "role": "funding_source",
+      "interac_transfer": {
+        "reference_number": "INT9876543210",
+        "financial_institution": "RBC",
+        "contact_used": "email",
+        "recipient_email": "mike@example.com",
+        "recipient_mobile": "+14165559876",
+        "auto_deposit_enabled": false,
+        "security_question": "What was your first pet's name?",
+        "security_answer_attempts": 0
+      },
+      "metadata": {
+        "transfer_speed": "instant",
+        "interac_fee": 1.50
+      }
+    }
+  ],
+  "amount": {
+    "value": 250.00,
+    "currency": "CAD"
+  },
+  "evidence": [
+    {
+      "evidence_type": "transfer_confirmation",
+      "confirmation_number": "CNF78901234",
+      "timestamp": "2023-11-24T09:30:20Z"
+    }
+  ],
+  "metadata": {
+    "purpose": "rent payment",
+    "tags": ["recurring", "housing"]
+  }
+}
+
+/*
+# Auto Deposit
+{
+  "interac_transfer": {
+    "reference_number": "INT1122334455",
+    "financial_institution": "TD",
+    "contact_used": "email",
+    "recipient_email": "auto_deposit@example.com",
+    "auto_deposit_enabled": true
+  }
+}
+
+# Mobile Transfer
+{
+  "interac_transfer": {
+    "reference_number": "INT5566778899",
+    "financial_institution": "BMO",
+    "contact_used": "mobile",
+    "recipient_mobile": "+14165551111"
+  }
+}
+
+# Failed Security Attempt
+{
+  "interac_transfer": {
+    "reference_number": "INT9999888877",
+    "financial_institution": "Scotiabank",
+    "contact_used": "email",
+    "recipient_email": "user@example.com",
+    "auto_deposit_enabled": false,
+    "security_question": "Mother's maiden name?",
+    "security_answer_attempts": 2
+  },
+  "evidence": [
+    {
+      "evidence_type": "security_answer_attempt",
+      "attempt_timestamp": "2023-11-24T10:15:00Z",
+      "successful": false
+    }
+  ]
+}
+
+
+
+
+*/
