@@ -22,85 +22,71 @@
               "enum": ["RBC", "TD", "Scotiabank", "BMO", "CIBC", "Desjardins", "National Bank", "Other"],
               "description": "Sending bank/institution"
             },
-            "transfer_type": {
+            "contact_used": {
               "type": "string",
-              "enum": ["email", "mobile", "autodeposit"],
-              "default": "email",
-              "description": "Delivery method for transfer"
-            },
-            "security_question": {
-              "type": "string",
-              "description": "Security question (if email transfer)"
-            },
-            "auto_deposit_registered": {
-              "type": "boolean",
-              "default": false,
-              "description": "Whether recipient has auto-deposit"
+              "enum": ["email", "mobile"],
+              "description": "Which contact method was used for this transfer"
             },
             "recipient_email": {
               "type": "string",
               "format": "email",
-              "description": "Recipient email (if email transfer)"
+              "description": "Recipient email address"
             },
             "recipient_mobile": {
               "type": "string",
-              "pattern": "^\\+?[0-9]{10,15}$",
-              "description": "Recipient mobile (if mobile transfer)"
+              "pattern": "^\\+?1?[0-9]{10}$",
+              "description": "Recipient mobile number in E.164 format"
+            },
+            "auto_deposit_enabled": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether recipient has auto-deposit enabled"
+            },
+            "security_question": {
+              "type": "string",
+              "description": "Required when auto_deposit_enabled=false and contact_used=email"
+            },
+            "security_answer_attempts": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3,
+              "description": "Number of failed security answer attempts"
             }
           },
-          "required": ["reference_number", "financial_institution"]
-        },
-        "metadata": {
-          "properties": {
-            "transfer_speed": {
-              "type": "string",
-              "enum": ["instant", "30_minutes", "1_hour", "next_day"],
-              "default": "30_minutes",
-              "description": "Selected transfer processing speed"
-            },
-            "interac_fee": {
-              "type": "number",
-              "minimum": 0,
-              "default": 1.50,
-              "description": "Fee charged for transfer"
-            },
-            "recipient_account_type": {
-              "type": "string",
-              "enum": ["checking", "savings", "unknown"],
-              "description": "Recipient's account type if known"
-            }
-          }
-        },
-        "evidence": {
-          "type": "array",
-          "items": {
-            "oneOf": [
-              {
+          "required": ["reference_number", "financial_institution", "contact_used"],
+          "allOf": [
+            {
+              "if": {
                 "properties": {
-                  "evidence_type": { "const": "transfer_confirmation" },
-                  "confirmation_number": { "type": "string" },
-                  "timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" }
-                },
-                "required": ["evidence_type", "confirmation_number"]
+                  "contact_used": { "const": "email" }
+                }
               },
-              {
-                "properties": {
-                  "evidence_type": { "const": "deposit_notification" },
-                  "deposit_timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
-                  "recipient_bank": { "type": "string" }
-                },
-                "required": ["evidence_type", "deposit_timestamp"]
-              },
-              {
-                "properties": {
-                  "evidence_type": { "const": "security_answer_attempt" },
-                  "attempt_timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
-                  "successful": { "type": "boolean" }
-                },
-                "required": ["evidence_type", "attempt_timestamp"]
+              "then": {
+                "required": ["recipient_email"]
               }
-            ]
-          }
+            },
+            {
+              "if": {
+                "properties": {
+                  "contact_used": { "const": "mobile" }
+                }
+              },
+              "then": {
+                "required": ["recipient_mobile"]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "contact_used": { "const": "email" },
+                  "auto_deposit_enabled": { "const": false }
+                }
+              },
+              "then": {
+                "required": ["security_question"]
+              }
+            }
+          ]
         }
       },
       "required": ["interac_transfer"]
