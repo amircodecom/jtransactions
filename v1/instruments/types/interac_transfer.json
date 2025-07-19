@@ -1,0 +1,109 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/interac_transfer.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InteracTransferInstrument",
+  "description": "Interac e-Transfer payment instrument (Canada)",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "interac_transfer" },
+        "interac_transfer": {
+          "type": "object",
+          "properties": {
+            "reference_number": {
+              "type": "string",
+              "pattern": "^[A-Z0-9]{10,20}$",
+              "description": "Interac transaction reference number"
+            },
+            "financial_institution": {
+              "type": "string",
+              "enum": ["RBC", "TD", "Scotiabank", "BMO", "CIBC", "Desjardins", "National Bank", "Other"],
+              "description": "Sending bank/institution"
+            },
+            "transfer_type": {
+              "type": "string",
+              "enum": ["email", "mobile", "autodeposit"],
+              "default": "email",
+              "description": "Delivery method for transfer"
+            },
+            "security_question": {
+              "type": "string",
+              "description": "Security question (if email transfer)"
+            },
+            "auto_deposit_registered": {
+              "type": "boolean",
+              "default": false,
+              "description": "Whether recipient has auto-deposit"
+            },
+            "recipient_email": {
+              "type": "string",
+              "format": "email",
+              "description": "Recipient email (if email transfer)"
+            },
+            "recipient_mobile": {
+              "type": "string",
+              "pattern": "^\\+?[0-9]{10,15}$",
+              "description": "Recipient mobile (if mobile transfer)"
+            }
+          },
+          "required": ["reference_number", "financial_institution"]
+        },
+        "metadata": {
+          "properties": {
+            "transfer_speed": {
+              "type": "string",
+              "enum": ["instant", "30_minutes", "1_hour", "next_day"],
+              "default": "30_minutes",
+              "description": "Selected transfer processing speed"
+            },
+            "interac_fee": {
+              "type": "number",
+              "minimum": 0,
+              "default": 1.50,
+              "description": "Fee charged for transfer"
+            },
+            "recipient_account_type": {
+              "type": "string",
+              "enum": ["checking", "savings", "unknown"],
+              "description": "Recipient's account type if known"
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "transfer_confirmation" },
+                  "confirmation_number": { "type": "string" },
+                  "timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" }
+                },
+                "required": ["evidence_type", "confirmation_number"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "deposit_notification" },
+                  "deposit_timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
+                  "recipient_bank": { "type": "string" }
+                },
+                "required": ["evidence_type", "deposit_timestamp"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "security_answer_attempt" },
+                  "attempt_timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
+                  "successful": { "type": "boolean" }
+                },
+                "required": ["evidence_type", "attempt_timestamp"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["interac_transfer"]
+    }
+  ]
+}
