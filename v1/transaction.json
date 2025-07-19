@@ -1,0 +1,115 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/transaction.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FinancialTransaction",
+  "description": "Complete financial transaction schema v1.0",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique transaction identifier"
+    },
+    "timestamp": {
+      "$ref": "common/timestamps.json#/definitions/iso8601"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "completed", "failed", "reversed", "disputed"],
+      "default": "pending"
+    },
+    "reported_by": {
+      "type": "string",
+      "enum": ["initiator", "receiver", "system"],
+      "description": "Who reported this transaction"
+    },
+    "initiator": {
+      "$ref": "common/parties.json#/definitions/party"
+    },
+    "receiver": {
+      "$ref": "common/parties.json#/definitions/party"
+    },
+    "instruments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          { "$ref": "instruments/types/bank_account.json" },
+          { "$ref": "instruments/types/check.json" },
+          { "$ref": "instruments/types/certified_check.json" },
+          { "$ref": "instruments/types/money_order.json" },
+          { "$ref": "instruments/types/gift_card.json" },
+          { "$ref": "instruments/types/credit_card.json" },
+          { "$ref": "instruments/types/debit_card.json" },
+          { "$ref": "instruments/types/p2p_app.json" },
+          { "$ref": "instruments/types/pos.json" },
+          { "$ref": "instruments/types/atm.json" },
+          { "$ref": "instruments/types/crypto.json" },
+          { "$ref": "instruments/types/mobile_wallet.json" },
+          { "$ref": "instruments/types/wire_transfer.json" }
+        ]
+      }
+    },
+    "amount": {
+      "$ref": "common/currency.json"
+    },
+    "location": {
+      "$ref": "common/location.json"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "sku": { "type": "string" },
+          "quantity": { "type": "number", "minimum": 1 },
+          "unit_price": { "type": "number", "minimum": 0 },
+          "tax": { "$ref": "common/currency.json#/definitions/tax" }
+        },
+        "required": ["description", "quantity", "unit_price"]
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "instruments/base/evidence.json#/definitions/digital_evidence" },
+          { "$ref": "instruments/base/evidence.json#/definitions/physical_evidence" }
+        ]
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "purpose": { "type": "string" },
+        "reference": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "risk_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    }
+  },
+  "required": ["id", "timestamp", "instruments", "amount"],
+  "additionalProperties": false,
+  "definitions": {
+    "instrument_roles": {
+      "type": "string",
+      "enum": [
+        "funding_source",
+        "payment_method", 
+        "receiving_account",
+        "authorization_device",
+        "purchased_item",
+        "intermediary"
+      ]
+    }
+  }
+}
