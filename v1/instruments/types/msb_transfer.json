@@ -22,6 +22,73 @@
               "pattern": "^[A-Z0-9]{8,15}$",
               "description": "MSB's reference number"
             },
+            "sender_details": {
+              "type": "object",
+              "properties": {
+                "full_name": { 
+                  "type": "string",
+                  "minLength": 2,
+                  "description": "Legal name as shown on ID"
+                },
+                "address": {
+                  "type": "string",
+                  "description": "Full street address"
+                },
+                "phone": {
+                  "type": "string",
+                  "pattern": "^\\+?[0-9]{10,15}$",
+                  "description": "International format phone number"
+                },
+                "id_type": {
+                  "type": "string",
+                  "enum": ["passport", "driver_license", "national_id", "other"]
+                },
+                "id_number": {
+                  "type": "string",
+                  "description": "Government-issued ID number"
+                },
+                "id_issuing_country": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{2}$",
+                  "description": "ISO 3166-1 alpha-2 country code"
+                },
+                "date_of_birth": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "YYYY-MM-DD format"
+                }
+              },
+              "required": ["full_name", "id_type", "id_number", "id_issuing_country"]
+            },
+            "recipient_details": {
+              "type": "object",
+              "properties": {
+                "full_name": {
+                  "type": "string",
+                  "minLength": 2,
+                  "description": "Recipient's legal name"
+                },
+                "country": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{2}$",
+                  "description": "Payout destination country"
+                },
+                "contact_phone": {
+                  "type": "string",
+                  "pattern": "^\\+?[0-9]{10,15}$"
+                },
+                "payout_city": {
+                  "type": "string",
+                  "description": "City where funds will be collected"
+                },
+                "relationship_to_sender": {
+                  "type": "string",
+                  "enum": ["family", "friend", "business_associate", "other"],
+                  "default": "family"
+                }
+              },
+              "required": ["full_name", "country"]
+            },
             "payout_method": {
               "type": "string",
               "enum": ["cash_pickup", "bank_deposit", "mobile_wallet", "home_delivery"],
@@ -34,20 +101,23 @@
             },
             "exchange_rate": {
               "type": "number",
-              "minimum": 0,
+              "minimum": 0.0001,
               "description": "Applied currency conversion rate"
             },
-            "sender_id_type": {
-              "type": "string",
-              "enum": ["passport", "driver_license", "national_id", "other"],
-              "description": "ID used for sending"
-            },
-            "receiver_id_required": {
-              "type": "boolean",
-              "description": "Whether recipient must show ID"
+            "expected_payout_amount": {
+              "type": "number",
+              "minimum": 1,
+              "description": "Amount recipient should receive"
             }
           },
-          "required": ["provider", "transaction_number", "payout_method"]
+          "required": [
+            "provider",
+            "transaction_number",
+            "sender_details",
+            "recipient_details",
+            "payout_method",
+            "payout_currency"
+          ]
         },
         "metadata": {
           "type": "object",
@@ -57,47 +127,70 @@
               "properties": {
                 "aml_check": { "type": "boolean" },
                 "ctr_filed": { "type": "boolean" },
-                "sender_ssn": { "type": "string", "pattern": "^\\d{9}$" }
+                "sender_ssn": { 
+                  "type": "string",
+                  "pattern": "^[A-Z0-9]{8,20}$",
+                  "description": "Tax ID if required by jurisdiction"
+                },
+                "purpose_code": {
+                  "type": "string",
+                  "enum": ["family_support", "business", "gift", "education", "medical", "other"]
+                }
               },
-              "required": ["aml_check"]
+              "required": ["aml_check", "purpose_code"]
             },
-            "transfer_purpose": {
+            "transfer_speed": {
               "type": "string",
-              "enum": ["family_support", "business", "gift", "medical", "other"]
+              "enum": ["instant", "1_hour", "same_day", "next_day"],
+              "default": "same_day"
             },
-            "relationship_to_recipient": {
-              "type": "string",
-              "description": "Sender-declared relationship"
+            "fees": {
+              "type": "object",
+              "properties": {
+                "transfer_fee": { "type": "number", "minimum": 0 },
+                "currency_conversion_fee": { "type": "number", "minimum": 0 },
+                "payout_location_fee": { "type": "number", "minimum": 0 }
+              },
+              "required": ["transfer_fee"]
             }
           }
         },
         "evidence": {
           "type": "array",
+          "minItems": 1,
           "items": {
             "oneOf": [
               {
                 "properties": {
                   "evidence_type": { "const": "send_receipt" },
                   "receipt_number": { "type": "string" },
-                  "control_number": { "type": "string" }
-                },
-                "required": ["evidence_type", "receipt_number"]
-              },
-              {
-                "properties": {
-                  "evidence_type": { "const": "payout_confirmation" },
-                  "payout_location": { "type": "string" },
+                  "control_number": { "type": "string" },
+                  "timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
                   "agent_id": { "type": "string" }
                 },
-                "required": ["evidence_type"]
+                "required": ["evidence_type", "receipt_number", "control_number"]
               },
               {
                 "properties": {
                   "evidence_type": { "const": "id_verification" },
                   "id_type": { "type": "string" },
-                  "country_issued": { "type": "string" }
+                  "country_issued": { "type": "string" },
+                  "verification_method": {
+                    "type": "string",
+                    "enum": ["in_person", "digital", "document_upload"]
+                  }
                 },
                 "required": ["evidence_type", "id_type"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "payout_confirmation" },
+                  "payout_location": { "type": "string" },
+                  "payout_timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
+                  "collector_id_type": { "type": "string" },
+                  "collector_id_number": { "type": "string" }
+                },
+                "required": ["evidence_type", "payout_timestamp"]
               }
             ]
           }
