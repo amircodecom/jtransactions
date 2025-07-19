@@ -1,0 +1,31 @@
+{
+  "id": "txn_msb_2023112501",
+  "type": "msb_transfer",
+  "msb_transfer": {
+    "provider": "Western Union",
+    "transaction_number": "WU2023112501",
+    "sender_details": {
+      "full_name": "James Wilson",
+      "address": "456 Oak Ave, Toronto ON",
+      "phone": "+14165556789",
+      "id_number": "DL78901234",
+      "id_issuing_country": "CA"
+    },
+    "recipient_details": {
+      "full_name": "Amina Mohammed",
+      "country": "NG",
+      "contact_phone": "+2347061234567",
+      "payout_city": "Lagos",
+      "relationship_to_sender": "family"
+    },
+    "payout_method": "bank_deposit",
+    "payout_currency": "NGN",
+    "exchange_rate": 450.25
+  },
+  "metadata": {
+    "regulatory_compliance": {
+      "aml_check": true,
+      "ctr_filed": false
+    }
+  }
+}
