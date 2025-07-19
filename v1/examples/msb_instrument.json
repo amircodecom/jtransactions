@@ -1,31 +1,54 @@
 {
-  "id": "txn_msb_2023112501",
+  "id": "txn_wu_987654",
   "type": "msb_transfer",
   "msb_transfer": {
     "provider": "Western Union",
-    "transaction_number": "WU2023112501",
+    "transaction_number": "WU987654321",
     "sender_details": {
-      "full_name": "James Wilson",
-      "address": "456 Oak Ave, Toronto ON",
-      "phone": "+14165556789",
-      "id_number": "DL78901234",
-      "id_issuing_country": "CA"
+      "full_name": "Li Wei",
+      "address": "88 Dundas St, Toronto, Canada",
+      "phone": "+14165551234",
+      "id_type": "passport",
+      "id_number": "CN123456789",
+      "id_issuing_country": "CN",
+      "date_of_birth": "1985-03-15"
     },
     "recipient_details": {
-      "full_name": "Amina Mohammed",
-      "country": "NG",
-      "contact_phone": "+2347061234567",
-      "payout_city": "Lagos",
+      "full_name": "Li Jing",
+      "country": "CN",
+      "contact_phone": "+8613812345678",
+      "payout_city": "Shanghai",
       "relationship_to_sender": "family"
     },
     "payout_method": "bank_deposit",
-    "payout_currency": "NGN",
-    "exchange_rate": 450.25
+    "payout_currency": "CNY",
+    "exchange_rate": 5.32,
+    "expected_payout_amount": 5320.00
   },
   "metadata": {
     "regulatory_compliance": {
       "aml_check": true,
-      "ctr_filed": false
+      "purpose_code": "family_support"
+    },
+    "transfer_speed": "same_day",
+    "fees": {
+      "transfer_fee": 12.99,
+      "currency_conversion_fee": 3.00
     }
-  }
+  },
+  "evidence": [
+    {
+      "evidence_type": "send_receipt",
+      "receipt_number": "RC78901234",
+      "control_number": "CN12345678",
+      "timestamp": "2023-11-25T14:30:00Z",
+      "agent_id": "AGENT12345"
+    },
+    {
+      "evidence_type": "id_verification",
+      "id_type": "passport",
+      "country_issued": "CN",
+      "verification_method": "in_person"
+    }
+  ]
 }
