@@ -87,6 +87,76 @@
               }
             }
           ]
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "transfer_speed": {
+              "type": "string",
+              "enum": ["instant", "30_minutes", "1_hour", "next_day"],
+              "default": "30_minutes",
+              "description": "Selected transfer processing speed"
+            },
+            "interac_fee": {
+              "type": "number",
+              "minimum": 0,
+              "default": 1.50,
+              "description": "Fee charged for transfer"
+            },
+            "recipient_account_type": {
+              "type": "string",
+              "enum": ["checking", "savings", "unknown"],
+              "description": "Recipient's account type if known"
+            },
+            "notification_preferences": {
+              "type": "object",
+              "properties": {
+                "email_alert": { "type": "boolean" },
+                "sms_alert": { "type": "boolean" }
+              }
+            }
+          },
+          "required": ["transfer_speed", "interac_fee"]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "transfer_confirmation" },
+                  "confirmation_number": { "type": "string" },
+                  "timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" }
+                },
+                "required": ["evidence_type", "confirmation_number"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "deposit_notification" },
+                  "deposit_timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
+                  "recipient_bank": { "type": "string" }
+                },
+                "required": ["evidence_type", "deposit_timestamp"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "security_answer_attempt" },
+                  "attempt_timestamp": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
+                  "successful": { "type": "boolean" },
+                  "ip_address": { "type": "string", "format": "ipv4" }
+                },
+                "required": ["evidence_type", "attempt_timestamp", "successful"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "auto_deposit_registration" },
+                  "registration_date": { "$ref": "../../common/timestamps.json#/definitions/iso8601" },
+                  "verified": { "type": "boolean" }
+                },
+                "required": ["evidence_type", "registration_date"]
+              }
+            ]
+          }
         }
       },
       "required": ["interac_transfer"]
