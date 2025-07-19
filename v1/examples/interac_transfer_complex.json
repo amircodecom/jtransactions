@@ -1,53 +1,36 @@
 {
-  "id": "txn_01hq9i8j7k6l5m4n3o2p1q0r1s",
-  "timestamp": "2023-11-24T09:30:15Z",
-  "status": "completed",
-  "reported_by": "initiator",
-  "initiator": {
-    "type": "person",
-    "id": "user_33456",
-    "name": "Sarah Johnson",
-    "email": "sarah@example.com"
+  "id": "txn_01hqa9b8c7d6e5f4g3h2i1j0k9l",
+  "type": "interac_transfer",
+  "interac_transfer": {
+    "reference_number": "INT20231124123",
+    "financial_institution": "CIBC",
+    "contact_used": "email",
+    "recipient_email": "recipient@example.com",
+    "auto_deposit_enabled": true,
+    "security_answer_attempts": 0
   },
-  "instruments": [
-    {
-      "id": "inst_01hq9i8j7k6l5m4n3o2p1q0r1s",
-      "type": "interac_transfer",
-      "belongs_to": "initiator",
-      "role": "funding_source",
-      "interac_transfer": {
-        "reference_number": "INT9876543210",
-        "financial_institution": "RBC",
-        "contact_used": "email",
-        "recipient_email": "mike@example.com",
-        "recipient_mobile": "+14165559876",
-        "auto_deposit_enabled": false,
-        "security_question": "What was your first pet's name?",
-        "security_answer_attempts": 0
-      },
-      "metadata": {
-        "transfer_speed": "instant",
-        "interac_fee": 1.50
-      }
+  "metadata": {
+    "transfer_speed": "instant",
+    "interac_fee": 1.50,
+    "recipient_account_type": "checking",
+    "notification_preferences": {
+      "email_alert": true,
+      "sms_alert": false
     }
-  ],
-  "amount": {
-    "value": 250.00,
-    "currency": "CAD"
   },
   "evidence": [
     {
       "evidence_type": "transfer_confirmation",
-      "confirmation_number": "CNF78901234",
-      "timestamp": "2023-11-24T09:30:20Z"
+      "confirmation_number": "TC78901234",
+      "timestamp": "2023-11-24T10:00:00Z"
+    },
+    {
+      "evidence_type": "auto_deposit_registration",
+      "registration_date": "2023-10-15T00:00:00Z",
+      "verified": true
     }
-  ],
-  "metadata": {
-    "purpose": "rent payment",
-    "tags": ["recurring", "housing"]
-  }
+  ]
 }
-
 /*
 # Auto Deposit
 {
