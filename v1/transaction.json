@@ -46,7 +46,8 @@
           { "$ref": "instruments/types/atm.json" },
           { "$ref": "instruments/types/crypto.json" },
           { "$ref": "instruments/types/mobile_wallet.json" },
-          { "$ref": "instruments/types/wire_transfer.json" }
+          { "$ref": "instruments/types/wire_transfer.json" },
+          { "$ref": "instruments/types/interac_transfer.json" }
         ]
       }
     },
