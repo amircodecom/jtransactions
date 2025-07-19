@@ -227,18 +227,22 @@ Intruments (type): bank_account, check, certified_check, money_order, gift_card,
 | interac_transfer | {}        | |
 |                  | .reference_number | |
 |                  | .financial_institution | [RBC, TD, Scotiabank, BMO, CIBC, Desjardins, National Bank, other] |
-|                  | .transfer_type | [email, mobile] |
-|                  | .auto_deposit_enabled (bool) | |
-|                  | .security_question | |
+|                  | .contact_used | [email, mobile] |
 |                  | .recipient_email | |
 |                  | .recipient_mobile | |
+|                  | .auto_deposit_enabled (bool) | |
+|                  | .security_question | |
+|                  | .security_answer_attempts | |
+
 | metadata         | {} | |
 |                  | .transfer_speed | [instant, 30_minutes, 1_hour, next_day ] |
 |                  | .interac_fee (number) | |
 |                  | .recipient_account_type | [checking, saving, uknown] | 
+|                  | .notification_preferences {email_alert(bool), sms_alert(bool)} | |
 | evidence []      | { evidence_type: "transfer_confirmation" , confirmation_number, timestamp } | |
 |                  | or { evidence_type: "deposit_notification", deposit_timestamp, recipient_bank} | |
-|                  | or { evidence_type: "security_answer_attempt", attempt_timestamp, successful (bool) | |
+|                  | or { evidence_type: "security_answer_attempt", attempt_timestamp, successful (bool), ip_address | |
+|                  | or { evidence_type: "auto_deposit_registration", registration_date, verified(bool) }
 
 
 
