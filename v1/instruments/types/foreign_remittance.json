@@ -1,0 +1,156 @@
+{
+  "$id": "https://yourdomain.com/schemas/v1/instruments/types/foreign_remittance.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ForeignRemittanceInstrument",
+  "description": "International family support remittance instrument with handler tracking",
+  "type": "object",
+  "allOf": [
+    { "$ref": "../base/instrument.json" },
+    {
+      "properties": {
+        "type": { "const": "foreign_remittance" },
+        "foreign_remittance": {
+          "type": "object",
+          "properties": {
+            // Core Transaction Info
+            "remittance_reference": {
+              "type": "string",
+              "pattern": "^[A-Z0-9]{10,20}$",
+              "description": "Unique transaction reference"
+            },
+            "corridor": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}-[A-Z]{2}$",
+              "examples": ["US-IN", "CA-PH"],
+              "description": "Sender-receiver country pair (ISO codes)"
+            },
+
+            // Handler Identification
+            "handler_type": {
+              "type": "string",
+              "enum": ["bank", "fintech", "mobile_network", "post_office", "credit_union", "specialized_remitter"],
+              "description": "Institution category facilitating transfer"
+            },
+            "handler_name": {
+              "type": "string",
+              "examples": ["Remitly", "Wise", "Bank of America Global Remit"],
+              "description": "Specific service provider name"
+            },
+            "handler_id": {
+              "type": "string",
+              "description": "Provider's internal identifier"
+            },
+
+            // Parties
+            "sender_origin_country": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$",
+              "description": "Sender's country of residence (ISO code)"
+            },
+            "receiver_destination_country": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$",
+              "description": "Recipient's country (ISO code)"
+            },
+
+            // Compliance
+            "transfer_purpose": {
+              "type": "string",
+              "enum": ["family_support", "education", "medical", "living_expenses", "other"],
+              "default": "family_support"
+            },
+            "source_of_funds": {
+              "type": "string",
+              "enum": ["salary", "savings", "business_income", "investments", "other"],
+              "description": "Sender's declared fund origin"
+            },
+            "relationship_proof": {
+              "type": "string",
+              "enum": ["documented", "declared", "verified", "none"],
+              "description": "How family relationship was validated"
+            }
+          },
+          "required": [
+            "remittance_reference",
+            "corridor",
+            "handler_type",
+            "transfer_purpose",
+            "source_of_funds"
+          ]
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "compliance": {
+              "type": "object",
+              "properties": {
+                "fatca_reportable": { "type": "boolean" },
+                "crs_applied": { "type": "boolean" },
+                "tax_treaty_article": {
+                  "type": "string",
+                  "pattern": "^Article\\s\\d+[A-Z]?$",
+                  "description": "Applicable tax treaty clause"
+                },
+                "immigration_related": {
+                  "type": "boolean",
+                  "description": "If tied to visa/sponsorship requirements"
+                }
+              }
+            },
+            "fx_details": {
+              "type": "object",
+              "properties": {
+                "mid_market_rate": { "type": "number", "minimum": 0.0001 },
+                "applied_rate": { "type": "number", "minimum": 0.0001 },
+                "rate_margin_percent": { "type": "number" }
+              },
+              "required": ["mid_market_rate", "applied_rate"]
+            }
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              {
+                "properties": {
+                  "evidence_type": { "const": "sender_id_verification" },
+                  "id_type": { "type": "string" },
+                  "country_issued": { "type": "string", "pattern": "^[A-Z]{2}$" }
+                },
+                "required": ["evidence_type", "id_type"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "relationship_document" },
+                  "document_type": {
+                    "type": "string",
+                    "enum": ["birth_certificate", "marriage_certificate", "affidavit", "other"]
+                  },
+                  "issuing_authority": { "type": "string" }
+                },
+                "required": ["evidence_type", "document_type"]
+              },
+              {
+                "properties": {
+                  "evidence_type": { "const": "handler_confirmation" },
+                  "confirmation_id": { "type": "string" },
+                  "handler_contact": { "type": "string" }
+                },
+                "required": ["evidence_type", "confirmation_id"]
+              }
+            ]
+          }
+        }
+      },
+      "required": ["foreign_remittance"]
+    }
+  ],
+  "definitions": {
+    "country_code": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    }
+  }
+}
