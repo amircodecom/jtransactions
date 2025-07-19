@@ -1,0 +1,31 @@
+{
+  "id": "txn_remit_2023112701",
+  "type": "foreign_remittance",
+  "foreign_remittance": {
+    "remittance_reference": "REM2023112701",
+    "corridor": "US-PH",
+    "handler_type": "fintech",
+    "handler_name": "Sendwave",
+    "sender_origin_country": "US",
+    "receiver_destination_country": "PH",
+    "transfer_purpose": "family_support",
+    "source_of_funds": "salary",
+    "relationship_proof": "documented"
+  },
+  "metadata": {
+    "compliance": {
+      "fatca_reportable": true
+    },
+    "fx_details": {
+      "mid_market_rate": 55.40,
+      "applied_rate": 53.80
+    }
+  },
+  "evidence": [
+    {
+      "evidence_type": "sender_id_verification",
+      "id_type": "drivers_license",
+      "country_issued": "US"
+    }
+  ]
+}
