@@ -344,6 +344,32 @@ Intruments (type): bank_account, check, certified_check, money_order, gift_card,
 
 
 
+#### MORE?
+Here are additional instrument types that could be valuable additions to your financial transaction schema:
+
+1. **Loyalty Points** - Tracks redemption/earnings from reward programs  
+2. **Bill Payment** - Formal bill payments through banking institutions  
+3. **ADDED - Money Service Business (MSB)** - Western Union/MoneyGram cash transfers  
+4. **Crypto Exchange** - Trading between crypto/fiat currencies  
+5. **Payroll Card** - Employer-issued prepaid wage cards  
+6. **Health Savings Account (HSA)** - Medical expense payment instrument  
+7. **Government Checks** - Tax refunds/stimulus payments  
+8. **Escrow Account** - Held funds for real estate/legal transactions  
+9. **Crowdfunding** - Kickstarter/GoFundMe style transfers  
+10. **Foreign Remittance** - International family support transfers  
+11. **Corporate Travel Card** - Company-issued expense cards  
+12. **Prepaid Debit** - Non-bank reloadable debit cards  
+13. **Gaming Credits** - Casino chips/in-game currencies  
+14. **Microfinance** - Small loan disbursements/repayments  
+15. **Subscription Billing** - Recurring SaaS/media payments  
+16. **Tax Payment** - IRS/CRA direct remittances  
+17. **Tuition Payment** - Educational institution payments  
+18. **Royalty Payment** - Content creator/artist distributions  
+19. **Insurance Payout** - Claim settlement transfers  
+20. **Dividend Distribution** - Investment earnings payments  
+
+Each would follow the same pattern we established (base fields + type-specific details + metadata + evidence). Would you like me to develop any of these further?
+
 
 
 
