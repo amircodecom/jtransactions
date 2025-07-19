@@ -18,7 +18,7 @@
 
 ---
 
-Intruments (type): bank_account, check, certified_check, money_order, gift_card, credit_card, debit_card, p2p_app, pos, atm, crypto, mobile_wallet, wire_transfer, interac_transfer
+Intruments (type): bank_account, check, certified_check, money_order, gift_card, credit_card, debit_card, p2p_app, pos, atm, crypto, mobile_wallet, wire_transfer, interac_transfer, forign_remittance, MSB
 
 # Instrument
 
@@ -319,6 +319,28 @@ Intruments (type): bank_account, check, certified_check, money_order, gift_card,
 
 
 
+## Foreign Remittance
+| Field           | Value                 | REF/ENUM  |
+| ------------------| ----------------------| |
+| type              | "foreign_remittance"  | |
+| forign_remittance | {} | |
+|                   | .remittance_reference | |
+|                   | .corridor "" | |
+|                   | .handler_type | [bank, fintech, mobile_network, post_office, credit_union, specialized_remitter] |
+|                   | .handler_name | e.g. remitly, wise, bank of america global remit |
+|                   | .sender_origin_party | |
+|                   | .receiver_destination_country  | |
+|                   | .transfer_purpose | [family_support, education, medical, living_expenses, other] 
+|                   | .source_of_funds | [salary, savings, business_income, investments, other] |
+|                   | .relationship_proof | [documented, declared, verified, none] |
+| metadata          | {} | |
+|                   | .compliance { fatca_reporable (bool), crs_applie (bool), tax_treaty_article, immigration_related(bool) } |
+|                   | .fx_details { mid_market_rate, applied_rate, rate_margin_percent } | |
+| evidence          | { evidence_type: sender_id_verificcation, id_type, country_issued } | |
+|                   | or { evidence_type: relationship_document, document_type [birth_certificate, marriage_certificate, affidavit, other], issuing_authority } | |
+|                   | or { evidence_type: handler_confirmation, confirmation_id, handler_contact } 
+
+
 ## CRYPTO
 
 
@@ -356,7 +378,7 @@ Here are additional instrument types that could be valuable additions to your fi
 7. **Government Checks** - Tax refunds/stimulus payments  
 8. **Escrow Account** - Held funds for real estate/legal transactions  
 9. **Crowdfunding** - Kickstarter/GoFundMe style transfers  
-10. **Foreign Remittance** - International family support transfers  
+10. **ADDED - Foreign Remittance** - International family support transfers  
 11. **Corporate Travel Card** - Company-issued expense cards  
 12. **Prepaid Debit** - Non-bank reloadable debit cards  
 13. **Gaming Credits** - Casino chips/in-game currencies  
