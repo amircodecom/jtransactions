@@ -25,7 +25,8 @@
         "atm",
         "crypto",
         "mobile_wallet",
-        "wire_transfer"
+        "wire_transfer",
+        "interac_transfer"
       ],
       "description": "Instrument type classification"
     },
