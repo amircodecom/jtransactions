@@ -27,7 +27,8 @@
         "mobile_wallet",
         "wire_transfer",
         "interac_transfer",
-        "msb_transfer"
+        "msb_transfer",
+        "foreign_remittance"
       ],
       "description": "Instrument type classification"
     },
