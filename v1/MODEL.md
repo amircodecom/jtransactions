@@ -295,6 +295,27 @@ Intruments (type): bank_account, check, certified_check, money_order, gift_card,
 
 
 
+## MSB Transfer (Wester Union/MoneyGram)
+
+| Field           | Value           | REF/ENUM  |
+| ------------    | ----------------| |
+| type            | "msb_transfer"  | |
+| msb_transfer    | {}              | |
+|                 | .provider       | [Western Union | MoneyGram | Ria | Small World | Other ] |
+|                 | .transaction_number | |
+|                 | .sender_details { full_name, address, phone, id_type [passport, driver_license, national_id, other], id_number, id_issuing_country, date_of_birth, } | |
+|                 | .recipient_details { full_name, country, contact_phone, payout_city, relationship_to_sender [family, friend, business_associate, other]} | |
+|                 | .payout_method | [cash_pickup, bank_deposit, mobile_wallet, home_delivery] |
+|                 | .payout_currency | |
+|                 | .exchange_rate | |
+|                 | .expected_payout_amount | |
+| metadata        | {}  | |
+|                 | .regulatory_compliance { aml_check (bool), ctr_filed (bool), sender_ssn, purpose_code [family_support, business, gift, education, medical, other]} | |
+|                 | .transfer_speed | [instance, 1_hour, same_ady, next_day ] |
+|                 | .fees { transfer_fee, currency_conversion_fee, payout_location_feed} | |
+| evidence[]      | { evidence_type: send_receipt, receipt_number, control_number, timstamp, agent_id} | |
+|                 | or { evidence_type: id_verification, id_type, country_issued, verification_method [in_person, digital, document_upload]} | |
+|                 | or { evidence_type: payout_confirmation, payout_location, payout_timestamp, collector_id_type, collector_id_number } | |
 
 
 
