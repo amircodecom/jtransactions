@@ -298,7 +298,7 @@ Intruments (type): bank_account, check, certified_check, money_order, gift_card,
 ## MSB Transfer (Wester Union/MoneyGram)
 
 | Field           | Value           | REF/ENUM  |
-| ------------    | ----------------| |
+| ----------------|-----------------| ----------|
 | type            | "msb_transfer"  | |
 | msb_transfer    | {}              | |
 |                 | .provider       | [Western Union | MoneyGram | Ria | Small World | Other ] |
@@ -320,8 +320,8 @@ Intruments (type): bank_account, check, certified_check, money_order, gift_card,
 
 
 ## Foreign Remittance
-| Field           | Value                 | REF/ENUM  |
-| ------------------| ----------------------| |
+| Field             | Value                 | REF/ENUM  |
+|-------------------|-----------------------|-----------|
 | type              | "foreign_remittance"  | |
 | forign_remittance | {} | |
 |                   | .remittance_reference | |
